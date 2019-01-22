@@ -6,7 +6,7 @@ environment:
   PYTHON_ARCH: "32"
 
   matrix:
-    - MINGW_CONFIGURATIONS: '6@x86@dwarf2@posix'
+    - MINGW_CONFIGURATIONS: '6@x86_64@seh@posix'
 
 matrix:
   fast_finish: true
