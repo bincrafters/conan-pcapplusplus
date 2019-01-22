@@ -63,10 +63,11 @@ class PcapplusplusConan(ConanFile):
             # build_flags += ' -L%s' % lib_path
         # self.run("make -e PCAPPP_BUILD_FLAGS='%s' libs -j5" % build_flags)
         if self.settings.compiler == "Visual Studio":
-            msbuild = MSBuild(self)
-            msbuild.build("mk\\vs2015\\PcapPlusPlus.sln")
-            msbuild.build("mk\\vs2015\\PcapPlusPlus-Examples.sln")
-            msbuild.build("mk\\vs2015\\Tutorials.sln")
+            with tools.chdir("PcapPlusPlus"):
+                msbuild = MSBuild(self)
+                msbuild.build("mk\\vs2015\\PcapPlusPlus.sln")
+                msbuild.build("mk\\vs2015\\PcapPlusPlus-Examples.sln")
+                msbuild.build("mk\\vs2015\\Tutorials.sln")
         else:
             with tools.chdir("PcapPlusPlus"):
                 env_build = AutoToolsBuildEnvironment(self)
