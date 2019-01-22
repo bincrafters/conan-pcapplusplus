@@ -1,9 +1,4 @@
-
 build: false
-
-configuration:
-  - Debug
-  - Release
 
 environment:
     PYTHON: "C:\\Python27"
