@@ -54,18 +54,20 @@ class PcapplusplusConan(ConanFile):
         os.rename(extracted_dir, self._source_subfolder)
 
     def build(self):
-
         with tools.chdir(self._source_subfolder):
             if self.settings.os == "Linux":
-                config_command = ("./configure-linux.sh --default --install-dir %s" % self.package_folder)
+                config_command = ("./configure-linux.sh --default")
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 # libpcap_info = self.deps_cpp_info["libpcap"]
                 # include_path = libpcap_info.include_paths[0]
                 # lib_path = libpcap_info.lib_paths[0]
                 self.run(config_command)
+                env_build = AutoToolsBuildEnvironment(self)
+                env_build.make()
+
             elif self.settings.os == "Macos":
-                config_command = ("./configure-mac_os_x.sh --install-dir %s" % self.package_folder)
+                config_command = ("./configure-mac_os_x.sh --install-dir")
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 # libpcap_info = self.deps_cpp_info["libpcap"]
@@ -102,13 +104,11 @@ class PcapplusplusConan(ConanFile):
                 raise Exception("%s is not supported" % self.settings.os)
 
     def package(self):
-        if self.settings.os == "Windows":
-            self.copy("*.h", dst="include", src="PcapPlusPlus\\Dist\\header")
-            self.copy("*.lib", dst="lib", src="PcapPlusPlus\\Dist\\", keep_path=False)
-            self.copy("*.pdb", dst="lib", src="PcapPlusPlus\\Dist\\", keep_path=False)
-            self.copy("*.*", dst="bin", src="PcapPlusPlus\\Dist\\examples", keep_path=False)
-        else:
-            self.run("make install")
+        self.copy("*.h", dst="include", src="PcapPlusPlus/Dist/header")
+        self.copy("*.lib", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
+        self.copy("*.a", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
+        self.copy("*.pdb", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
+        self.copy("*", dst="bin", src="PcapPlusPlus/Dist/examples", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
