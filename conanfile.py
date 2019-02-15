@@ -59,10 +59,13 @@ class PcapplusplusConan(ConanFile):
                 config_command = ("./configure-linux.sh --default")
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
-                # libpcap_info = self.deps_cpp_info["libpcap"]
-                # include_path = libpcap_info.include_paths[0]
-                # lib_path = libpcap_info.lib_paths[0]
                 self.run(config_command)
+                libpcap_info = self.deps_cpp_info["libpcap"]
+                include_path = libpcap_info.include_paths[0]
+                lib_path = libpcap_info.lib_paths[0]
+                libpcap_folders = "PCAPPP_INCLUDES += -I{0}\nPCAPPP_LIBS_DIR += -L{1}".format(include_path, lib_path)
+                tools.save("mk/PcapPlusPlus.mk", libpcap_folders, append=True)
+                    
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
 
