@@ -68,6 +68,9 @@ class PcapplusplusConan(ConanFile):
                 self.run("ls -la " + include_path)
                 self.run("ls -la " + lib_path)
                 self.output.warn(tools.load("mk/PcapPlusPlus.mk"))
+                tools.replace_in_file("Pcap++/header/PcapDevice.h", "#include <pcap.h>", "#include \"pcap.h\"")
+                tools.replace_in_file("Pcap++/src/PcapDevice.cpp", "#include <pcap.h>", "#include \"pcap.h\"")
+                tools.replace_in_file("Pcap++/src/PcapRemoteDevice.cpp", "#include <pcap.h>", "#include \"pcap.h\"")
                     
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
