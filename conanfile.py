@@ -3,7 +3,7 @@ import os
 
 
 class PcapplusplusConan(ConanFile):
-    name = "pcapplusplus"
+    name = "PcapPlusPlus"
     version = "18.08"
     license = "Unilicense"
     description = "PcapPlusPlus is a multiplatform C++ network sniffing and packet parsing and crafting framework"
