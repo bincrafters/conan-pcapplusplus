@@ -108,6 +108,8 @@ class PcapplusplusConan(ConanFile):
                 raise Exception("%s is not supported" % self.settings.os)
 
     def package(self):
+        if self.settings.os == "Linux":
+            self.cpp_info.libs.extend(["pthread"])
         self.copy("*.h", dst="include", src="PcapPlusPlus/Dist/header")
         self.copy("*.lib", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
         self.copy("*.a", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
