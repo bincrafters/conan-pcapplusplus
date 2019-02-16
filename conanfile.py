@@ -60,12 +60,12 @@ class PcapplusplusConan(ConanFile):
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 self.run(config_command)
-                libpcap_info = self.deps_cpp_info["libpcap"]
-                include_path = libpcap_info.include_paths[0]
-                lib_path = libpcap_info.lib_paths[0]
-                libpcap_folders = "PCAPPP_INCLUDES += -I{0}\nPCAPPP_LIBS_DIR += -L{1}".format(include_path, lib_path)
-                tools.save("mk/PcapPlusPlus.mk", libpcap_folders, append=True)
-                tools.replace_in_file("Pcap++/Makefile", "ifdef LINUX", "ifdef LINUX\nINCLUDES += -I{0}".format(include_path))
+
+                libpcap_include_path = self.deps_cpp_info["libpcap"].include_paths[0]
+                libpcap_lib_path = self.deps_cpp_info["libpcap"].lib_paths[0]
+                libpcap_dirs = "PCAPPP_INCLUDES += -I{0}\nPCAPPP_LIBS_DIR += -L{1}".format(libpcap_include_path, libpcap_lib_path)
+                tools.save("mk/PcapPlusPlus.mk", libpcap_dirs, append=True)
+                tools.replace_in_file("Pcap++/Makefile", "ifdef LINUX", "ifdef LINUX\nINCLUDES += -I{0}".format(libpcap_include_path))
                     
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
@@ -86,24 +86,20 @@ class PcapplusplusConan(ConanFile):
                 env_build.make()
 
             elif self.settings.os == "Windows":
+                if self.settings.compiler != "Visual Studio":
+                    raise Exception("Compiler %s is not supported" % self.settings.compiler)
+
                 winpcap_path = self.deps_cpp_info["winpcap"].rootpath 
-                if self.settings.compiler == "gcc": # mingw compiler
-                    msys_home = os.getenv("MSYS_ROOT")
-                    mingw_home = os.getenv("MINGW_HOME")
-                    self.run("configure-windows-mingw.bat mingw-w64 --mingw-home %s --msys-home %s --winpcap-home %s" % (mingw_home, msys_home, winpcap_path))
-                else: # visual studio compiler
-                    pthreads_path = self.deps_cpp_info["pthread-win32"].rootpath
-                    self.run("configure-windows-visual-studio.bat --winpcap-home %s --pthreads-home %s" % (winpcap_path, pthreads_path))
-                    self.generate_directory_build_props_file()
-                    msbuild = MSBuild(self)
-                    msbuild.build(
-                        self._sln_file, 
-                        targets=self._vs_projects_to_build,
-                        use_env=False, 
-                        properties={"WholeProgramOptimization":"None"},
-                    )
-                    # msbuild.build("mk\\vs2015\\PcapPlusPlus-Examples.sln")
-                    # msbuild.build("mk\\vs2015\\Tutorials.sln")
+                pthreads_path = self.deps_cpp_info["pthread-win32"].rootpath
+                self.run("configure-windows-visual-studio.bat --winpcap-home %s --pthreads-home %s" % (winpcap_path, pthreads_path))
+                self.generate_directory_build_props_file()
+                msbuild = MSBuild(self)
+                msbuild.build(
+                    self._sln_file, 
+                    targets=self._vs_projects_to_build,
+                    use_env=False, 
+                    properties={"WholeProgramOptimization":"None"},
+                )
             else:
                 raise Exception("%s is not supported" % self.settings.os)
 
