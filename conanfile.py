@@ -71,7 +71,7 @@ class PcapplusplusConan(ConanFile):
                 env_build.make()
 
             elif self.settings.os == "Macos":
-                config_command = ("./configure-mac_os_x.sh --install-dir")
+                config_command = ("./configure-mac_os_x.sh")
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 # libpcap_info = self.deps_cpp_info["libpcap"]
