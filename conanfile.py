@@ -119,6 +119,7 @@ class PcapplusplusConan(ConanFile):
         if self.settings.os == "Macos":
             self.cpp_info.exelinkflags.append("-framework CoreFoundation")
             self.cpp_info.exelinkflags.append("-framework Security")
+            self.cpp_info.exelinkflags.append("-framework SystemConfiguration")
 
     def generate_directory_build_props_file(self):
     
