@@ -116,6 +116,9 @@ class PcapplusplusConan(ConanFile):
             self.cpp_info.libs.extend(["pthread"])
         if self.settings.os == "Windows":
             self.cpp_info.libs.extend(["Iphlpapi"])
+        if self.settings.os == "Macos":
+            self.cpp_info.exelinkflags.append("-framework CoreFoundation")
+            self.cpp_info.exelinkflags.append("-framework Security")
 
     def generate_directory_build_props_file(self):
     
