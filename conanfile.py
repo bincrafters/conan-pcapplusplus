@@ -74,14 +74,9 @@ class PcapplusplusConan(ConanFile):
                 config_command = ("./configure-mac_os_x.sh")
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
-                # libpcap_info = self.deps_cpp_info["libpcap"]
-                # include_path = libpcap_info.include_paths[0]
-                # lib_path = libpcap_info.lib_paths[0]
+
                 self.run(config_command)
                 
-                # build_flags = '-I%s' % include_path
-                # build_flags += ' -L%s' % lib_path
-                # self.run("make -e PCAPPP_BUILD_FLAGS='%s' libs -j5" % build_flags)
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
 
@@ -104,6 +99,7 @@ class PcapplusplusConan(ConanFile):
                 raise Exception("%s is not supported" % self.settings.os)
 
     def package(self):
+        self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder, keep_path=False)
         self.copy("*.h", dst="include", src="PcapPlusPlus/Dist/header")
         self.copy("*.lib", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
         self.copy("*.a", dst="lib", src="PcapPlusPlus/Dist/", keep_path=False)
