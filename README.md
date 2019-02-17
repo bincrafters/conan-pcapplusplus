@@ -2,7 +2,7 @@
 
 | Bintray | Windows | Linux & macOS |
 |:--------:|:---------:|:-----------------:|
-|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/pcapplusplus%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/pcapplusplus%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-pcapplusplus?svg=true)](https://ci.appveyor.com/project/bincrafters/conan-pcapplusplus)|[![Build Status](https://travis-ci.org/bincrafters/conan-pcapplusplus.svg)](https://travis-ci.org/bincrafters/conan-pcapplusplus)|
+|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/pcapplusplus%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/pcapplusplus%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-pcapplusplus?svg=true)](https://ci.appveyor.com/project/bincrafters/conan-pcapplusplus)|[![Build Status](https://travis-ci.com/bincrafters/conan-pcapplusplus.svg)](https://travis-ci.com/bincrafters/conan-pcapplusplus)|
 
 ## Conan.io Information
 
