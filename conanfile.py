@@ -54,7 +54,7 @@ class PcapplusplusConan(ConanFile):
             
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
-        extracted_dir = self.name + "-" + self.version
+        extracted_dir = self._source_subfolder + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
     def build(self):
