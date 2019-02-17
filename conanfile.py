@@ -5,12 +5,12 @@ import os
 class PcapplusplusConan(ConanFile):
     name = "PcapPlusPlus"
     version = "18.08"
-    license = "Unilicense"
+    license = "Unlicense"
     description = "PcapPlusPlus is a multiplatform C++ network sniffing and packet parsing and crafting framework"
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
     url = "https://github.com/bincrafters/conan-pcapplusplus"
     homepage = "https://github.com/seladb/PcapPlusPlus"
-    author = "seladb <pcapplusplus@gmail.com>"
+    author = "bincrafters <bincrafters@gmail.com>"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False], 
@@ -35,6 +35,10 @@ class PcapplusplusConan(ConanFile):
         "Pcap++", 
     ]
 
+    def configure(self):
+        if self.settings.os not in ["Windows", "Macos", "Linux"]:
+            raise Exception("%s is not supported" % self.settings.os)
+    
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
@@ -95,8 +99,6 @@ class PcapplusplusConan(ConanFile):
                     use_env=False, 
                     properties={"WholeProgramOptimization":"None"},
                 )
-            else:
-                raise Exception("%s is not supported" % self.settings.os)
 
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder, keep_path=False)
