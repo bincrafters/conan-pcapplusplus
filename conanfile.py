@@ -62,7 +62,7 @@ class PcapplusplusConan(ConanFile):
             if self.settings.os == "Linux":
                 libpcap_include_path = self.deps_cpp_info["libpcap"].include_paths[0]
                 libpcap_lib_path = self.deps_cpp_info["libpcap"].lib_paths[0]
-                config_command = "./configure-linux.sh --default --libpcap-include-dir %s --libpcap-lib-dir %s" % (libpcap_include_path, libpcap_lib_path)
+                config_command = ("./configure-linux.sh --default --libpcap-include-dir %s --libpcap-lib-dir %s" % (libpcap_include_path, libpcap_lib_path))
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 self.run(config_command)
@@ -71,7 +71,9 @@ class PcapplusplusConan(ConanFile):
                 env_build.make()
 
             elif self.settings.os == "Macos":
-                config_command = ("./configure-mac_os_x.sh")
+                libpcap_include_path = self.deps_cpp_info["libpcap"].include_paths[0]
+                libpcap_lib_path = self.deps_cpp_info["libpcap"].lib_paths[0]
+                config_command = ("./configure-mac_os_x.sh --libpcap-include-dir %s --libpcap-lib-dir %s" % (libpcap_include_path, libpcap_lib_path))
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
 
