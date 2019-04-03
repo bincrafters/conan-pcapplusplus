@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from conans import ConanFile, tools, MSBuild, AutoToolsBuildEnvironment
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -37,7 +39,7 @@ class PcapplusplusConan(ConanFile):
 
     def configure(self):
         if self.settings.os not in ["Windows", "Macos", "Linux"]:
-            raise Exception("%s is not supported" % self.settings.os)
+            raise ConanInvalidConfiguration("%s is not supported" % self.settings.os)
     
     def config_options(self):
         if self.settings.os == 'Windows':
@@ -53,7 +55,8 @@ class PcapplusplusConan(ConanFile):
             self.requires("libpcap/1.8.1@bincrafters/stable")
             
     def source(self):
-        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
+        sha256 = "0b44074ebbaaa8666e16471311b6b99b0a5bf52d16bbe1452d26bacecfd90add"
+        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version), sha256=sha256)
         extracted_dir = self._source_subfolder + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
