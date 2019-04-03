@@ -4,7 +4,7 @@ import os
 
 class PcapplusplusConan(ConanFile):
     name = "pcapplusplus"
-    version = "18.08"
+    version = "19.04"
     license = "Unlicense"
     description = "PcapPlusPlus is a multiplatform C++ network sniffing and packet parsing and crafting framework"
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
@@ -60,17 +60,13 @@ class PcapplusplusConan(ConanFile):
     def build(self):
         with tools.chdir(self._source_subfolder):
             if self.settings.os == "Linux":
-                config_command = ("./configure-linux.sh --default")
+                libpcap_include_path = self.deps_cpp_info["libpcap"].include_paths[0]
+                libpcap_lib_path = self.deps_cpp_info["libpcap"].lib_paths[0]
+                config_command = "./configure-linux.sh --default --libpcap-include-dir %s --libpcap-lib-dir %s" % (libpcap_include_path, libpcap_lib_path)
                 if self.options.immediate_mode:
                     config_command += " --use-immediate-mode"
                 self.run(config_command)
 
-                libpcap_include_path = self.deps_cpp_info["libpcap"].include_paths[0]
-                libpcap_lib_path = self.deps_cpp_info["libpcap"].lib_paths[0]
-                libpcap_dirs = "PCAPPP_INCLUDES += -I{0}\nPCAPPP_LIBS_DIR += -L{1}".format(libpcap_include_path, libpcap_lib_path)
-                tools.save("mk/PcapPlusPlus.mk", libpcap_dirs, append=True)
-                tools.replace_in_file("Pcap++/Makefile", "ifdef LINUX", "ifdef LINUX\nINCLUDES += -I{0}".format(libpcap_include_path))
-                    
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
 
@@ -80,7 +76,7 @@ class PcapplusplusConan(ConanFile):
                     config_command += " --use-immediate-mode"
 
                 self.run(config_command)
-                
+
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make()
 
