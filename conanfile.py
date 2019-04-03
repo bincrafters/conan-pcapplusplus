@@ -108,7 +108,7 @@ class PcapplusplusConan(ConanFile):
         self.copy("*", dst="bin", src="PcapPlusPlus/Dist/examples", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs = ["Pcap++", "Packet++", "Common++"]
         if self.settings.os == "Linux":
             self.cpp_info.libs.extend(["pthread"])
         if self.settings.os == "Windows":
