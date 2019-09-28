@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from conans import ConanFile, tools, MSBuild, AutoToolsBuildEnvironment
 from conans.errors import ConanInvalidConfiguration
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -12,7 +13,7 @@ class PcapplusplusConan(ConanFile):
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
     url = "https://github.com/bincrafters/conan-pcapplusplus"
     homepage = "https://github.com/seladb/PcapPlusPlus"
-    author = "bincrafters <bincrafters@gmail.com>"
+    author = "Bincrafters <bincrafters@gmail.com>"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False], 
@@ -88,7 +89,7 @@ class PcapplusplusConan(ConanFile):
 
             elif self.settings.os == "Windows":
                 if self.settings.compiler != "Visual Studio":
-                    raise Exception("Compiler %s is not supported" % self.settings.compiler)
+                    raise ConanInvalidConfiguration("Compiler %s is not supported" % self.settings.compiler)
 
                 winpcap_path = self.deps_cpp_info["winpcap"].rootpath 
                 pthreads_path = self.deps_cpp_info["pthread-win32"].rootpath
