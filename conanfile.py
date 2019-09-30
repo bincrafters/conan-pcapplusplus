@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from conans import ConanFile, tools, MSBuild, AutoToolsBuildEnvironment
 from conans.errors import ConanInvalidConfiguration
 from conans.errors import ConanInvalidConfiguration
