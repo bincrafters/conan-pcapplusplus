@@ -12,7 +12,6 @@ class PcapplusplusConan(ConanFile):
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
     url = "https://github.com/bincrafters/conan-pcapplusplus"
     homepage = "https://github.com/seladb/PcapPlusPlus"
-    author = "Bincrafters <bincrafters@gmail.com>"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False], 
