@@ -6,9 +6,9 @@ import os
 
 class PcapplusplusConan(ConanFile):
     name = "pcapplusplus"
-    version = "19.04"
+    version = "19.12"
     license = "Unlicense"
-    description = "PcapPlusPlus is a multiplatform C++ network sniffing and packet parsing and crafting framework"
+    description = "PcapPlusPlus is a multiplatform C++ library for capturing, parsing and crafting of network packets"
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
     url = "https://github.com/bincrafters/conan-pcapplusplus"
     homepage = "https://github.com/seladb/PcapPlusPlus"
@@ -27,8 +27,6 @@ class PcapplusplusConan(ConanFile):
 
     _source_subfolder = "PcapPlusPlus"
     
-    _sln_file = "mk/vs2015/PcapPlusPlus.sln"
-
     _vs_projects_to_build =[
         "Common++", 
         "LightPcapNg", 
@@ -54,7 +52,7 @@ class PcapplusplusConan(ConanFile):
             self.requires("libpcap/1.8.1@bincrafters/stable")
             
     def source(self):
-        sha256 = "0b44074ebbaaa8666e16471311b6b99b0a5bf52d16bbe1452d26bacecfd90add"
+        sha256 = "9bebe2972a6678b8fb80f93b92a3caf9babae346137f2171e6941f35b56f88bb"
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version), sha256=sha256)
         extracted_dir = self._source_subfolder + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
@@ -89,13 +87,20 @@ class PcapplusplusConan(ConanFile):
                 if self.settings.compiler != "Visual Studio":
                     raise ConanInvalidConfiguration("Compiler %s is not supported" % self.settings.compiler)
 
+                vs_version = "vs2015"
+                if self.settings.compiler.version == "15":
+                    vs_version = "vs2017"
+                elif self.settings.compiler.version == "16":
+                    vs_version = "vs2019"
+
+                sln_file = "mk/%s/PcapPlusPlus.sln" % (vs_version)
                 winpcap_path = self.deps_cpp_info["winpcap"].rootpath 
                 pthreads_path = self.deps_cpp_info["pthread-win32"].rootpath
-                self.run("configure-windows-visual-studio.bat --winpcap-home %s --pthreads-home %s" % (winpcap_path, pthreads_path))
+                self.run("configure-windows-visual-studio.bat --vs-version %s --winpcap-home %s --pthreads-home %s" % (vs_version, winpcap_path, pthreads_path))
                 self.generate_directory_build_props_file()
                 msbuild = MSBuild(self)
                 msbuild.build(
-                    self._sln_file, 
+                    sln_file, 
                     targets=self._vs_projects_to_build,
                     use_env=False, 
                     properties={"WholeProgramOptimization":"None"},
