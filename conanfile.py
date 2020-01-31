@@ -95,7 +95,7 @@ class PcapplusplusConan(ConanFile):
 
                 sln_file = "mk/%s/PcapPlusPlus.sln" % (vs_version)
                 winpcap_path = self.deps_cpp_info["winpcap"].rootpath 
-                pthreads_path = self.deps_cpp_info["pthread-win32"].rootpath
+                pthreads_path = self.deps_cpp_info["pthreads4w"].rootpath
                 self.run("configure-windows-visual-studio.bat --vs-version %s --winpcap-home %s --pthreads-home %s" % (vs_version, winpcap_path, pthreads_path))
                 self.generate_directory_build_props_file()
                 msbuild = MSBuild(self)
