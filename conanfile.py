@@ -6,7 +6,7 @@ import os
 
 class PcapplusplusConan(ConanFile):
     name = "pcapplusplus"
-    version = "19.12"
+    version = "20.08"
     license = "Unlicense"
     description = "PcapPlusPlus is a multiplatform C++ library for capturing, parsing and crafting of network packets"
     topics = ("conan", "pcapplusplus", "pcap", "network", "security", "packet")
@@ -52,7 +52,7 @@ class PcapplusplusConan(ConanFile):
             self.requires("libpcap/1.8.1@bincrafters/stable")
             
     def source(self):
-        sha256 = "9bebe2972a6678b8fb80f93b92a3caf9babae346137f2171e6941f35b56f88bb"
+        sha256 = "b35150a8517d3e5d5d8d1514126e4e8e4688f0941916af4256214c013c06ff50"
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version), sha256=sha256)
         extracted_dir = self._source_subfolder + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
