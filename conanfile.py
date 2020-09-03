@@ -47,9 +47,9 @@ class PcapplusplusConan(ConanFile):
         if self.settings.os == 'Windows':
             self.requires("winpcap/4.1.3@bincrafters/stable")
             if self.settings.compiler == "Visual Studio":
-                self.requires.add("pthreads4w/3.0.0")
+                self.requires("pthreads4w/3.0.0")
         else:
-            self.requires("libpcap/1.8.1@bincrafters/stable")
+            self.requires("libpcap/1.9.1")
             
     def source(self):
         sha256 = "b35150a8517d3e5d5d8d1514126e4e8e4688f0941916af4256214c013c06ff50"
