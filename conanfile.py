@@ -1,6 +1,5 @@
 from conans import ConanFile, tools, MSBuild, AutoToolsBuildEnvironment
 from conans.errors import ConanInvalidConfiguration
-from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -117,13 +116,13 @@ class PcapplusplusConan(ConanFile):
     def package_info(self):
         self.cpp_info.libs = ["Pcap++", "Packet++", "Common++"]
         if self.settings.os == "Linux":
-            self.cpp_info.libs.extend(["pthread"])
+            self.cpp_info.system_libs.append("pthread")
         if self.settings.os == "Windows":
-            self.cpp_info.libs.extend(["Iphlpapi"])
+            self.cpp_info.system_libs.append("Iphlpapi")
         if self.settings.os == "Macos":
-            self.cpp_info.exelinkflags.append("-framework CoreFoundation")
-            self.cpp_info.exelinkflags.append("-framework Security")
-            self.cpp_info.exelinkflags.append("-framework SystemConfiguration")
+            self.cpp_info.frameworks.append("CoreFoundation")
+            self.cpp_info.frameworks.append("Security")
+            self.cpp_info.frameworks.append("SystemConfiguration")
 
     def generate_directory_build_props_file(self):
     
